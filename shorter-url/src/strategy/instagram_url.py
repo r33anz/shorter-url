@@ -5,3 +5,4 @@ class YoutubeUrlStrategy(URLShorterStrategyInterface):
     def url_shorter(url :str) -> str:
         return " "
         
+        
