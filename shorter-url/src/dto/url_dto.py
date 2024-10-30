@@ -5,7 +5,7 @@ class UlrResponseDTO(BaseModel):
     shortCode: str
     accessCount: int
 
-class UrlCreateFTO(BaseModel):
+class UrlCreateDTO(BaseModel):
     url : str
 
 

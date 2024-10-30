@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+from src.routes.url_routes import router
 
-app = FastAPI
+
+app = FastAPI()
+app.include_router(router)
 
 if __name__ == "__main__":
     import uvicorn

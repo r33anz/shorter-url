@@ -1,8 +1,7 @@
 from src.interfaces.strategy_interface import URLShorterStrategyInterface
 
-class YoutubeUrlStrategy(URLShorterStrategyInterface):
+class InstagramUrlStrategy(URLShorterStrategyInterface):
 
     def url_shorter(url :str) -> str:
         return " "
-        
         
