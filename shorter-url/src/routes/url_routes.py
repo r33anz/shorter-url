@@ -18,12 +18,12 @@ def get_all_url():
     return urlController.get_all_url()
 
 @router.post('/shorten', response_model=UlrResponseDTO, status_code=status.HTTP_201_CREATED)
-def create_url(short_url: str):
-    return urlController.create_short_url(short_url)
+def create_url(url: str):
+    return urlController.create_short_url(url)
 
 @router.put('/shorten/{short_url}', response_model=UlrResponseDTO)
-def update_url(short_url: str):
-    return urlController.update_short_url(short_url)
+def update_url(short_url: str, url : UrlCreateDTO):
+    return urlController.update_short_url(short_url,url.url)
 
 @router.delete('/shorten/{short_url}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_url(short_url: str):

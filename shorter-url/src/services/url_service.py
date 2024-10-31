@@ -56,8 +56,20 @@ class UrlService(UrlServiceInterface):
         documents = urls_collection.find()
         return documents
 
-    def update_short_url(self, short_url :str):
-        pass
+    def update_short_url(self, short_url :str, url : str):
+
+        result = urls_collection.update_one(
+            { "shortCode": f"{short_url}" },
+            { "$set": { "url": url } }
+        )
+
+        if result.modified_count == 0:
+            return None 
+
+        updated_document = urls_collection.find_one({"shortCode": short_url})
+        
+        return updated_document
+
 
     def delete_short_url(self, short_url :str):
         pass

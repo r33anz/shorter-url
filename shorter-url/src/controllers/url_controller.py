@@ -16,29 +16,35 @@ class UrlController():
 
     @count_access
     def get_short_url(self, short_url: str) -> UlrResponseDTO:
+
         result = self.service.get_short_url(short_url)
         if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
         return UlrResponseDTO(**result)
     
     def get_all_url(self):
-        
+
         documents = self.service.get_all_url()
         return [UlrResponseDTO(**doc) for doc in documents ]
 
-    def update_short_url(self, short_url: str) -> UlrResponseDTO:
-        result = self.service.update_short_url(short_url)
+    def update_short_url(self, short_url: str, url : str) -> UlrResponseDTO:
+
+        result = self.service.update_short_url(short_url, url)
+
         if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
+        
         return UlrResponseDTO(**result)
 
     def delete_short_url(self, short_url: str):
+
         success = self.service.delete_short_url(short_url)
         if not success:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
         return None  
     
     def get_stats(self, short_url: str) -> UlrResponseDTO:
+
         stats = self.service.get_stats(short_url)
         if not stats:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Statistics not found")
