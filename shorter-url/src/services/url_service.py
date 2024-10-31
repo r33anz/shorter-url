@@ -2,9 +2,9 @@ from database_connection import urls_collection
 from src.strategy.instagram_url import InstagramUrlStrategy
 from src.strategy.youtube_url import YoutubeUrlStrategy
 from src.interfaces.strategy_interface import URLShorterStrategyInterface
-from src.dto.url_dto import UlrResponseDTO
+from src.interfaces.url_service_interface import UrlServiceInterface
 
-class UrlService():
+class UrlService(UrlServiceInterface):
 
     def __init__(self):
         self.strategies = {
@@ -13,6 +13,7 @@ class UrlService():
         }
 
     def generate_short_url(self, typeU :str,url:str) -> str:
+
         strategy: URLShorterStrategyInterface = self.strategies.get(typeU)
 
         if strategy:
@@ -38,7 +39,6 @@ class UrlService():
 
         typeUrl = self.indentify_url_type(url)
         resultUrl = self.generate_short_url(typeUrl,url)
-        urls_collection.insert_one({"url": url, "shortCode": resultUrl})
 
         result = {
             "url": url,
@@ -46,10 +46,15 @@ class UrlService():
             "accessCount": 0 
         }
 
+        urls_collection.insert_one(result)
         return result
     
     def get_short_url(self, short_url :str):
         pass
+
+    def get_all_url(self):
+        documents = urls_collection.find()
+        return documents
 
     def update_short_url(self, short_url :str):
         pass

@@ -20,6 +20,11 @@ class UrlController():
         if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
         return UlrResponseDTO(**result)
+    
+    def get_all_url(self):
+        
+        documents = self.service.get_all_url()
+        return [UlrResponseDTO(**doc) for doc in documents ]
 
     def update_short_url(self, short_url: str) -> UlrResponseDTO:
         result = self.service.update_short_url(short_url)

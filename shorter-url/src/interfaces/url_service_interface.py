@@ -9,6 +9,10 @@ class UrlServiceInterface(ABC):
     @abstractmethod
     def get_short_url(self):
         pass
+
+    @abstractmethod
+    def get_all_url():
+        pass
     
     @abstractmethod
     def update_short_url(self):

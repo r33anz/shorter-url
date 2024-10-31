@@ -2,6 +2,7 @@ from fastapi import APIRouter , HTTPException , status
 from src.controllers.url_controller import UrlController
 from src.services.url_service import UrlService
 from src.dto.url_dto import UlrResponseDTO,UrlCreateDTO
+from typing import List
 
 router = APIRouter()
 
@@ -11,6 +12,10 @@ urlController = UrlController(urlService)
 @router.get('/shorten/{short_url}', response_model=UlrResponseDTO)
 def get_short_url(short_url: str):
     return urlController.get_short_url(short_url)
+
+@router.get('/shorten',response_model=List[UlrResponseDTO])
+def get_all_url():
+    return urlController.get_all_url()
 
 @router.post('/shorten', response_model=UlrResponseDTO, status_code=status.HTTP_201_CREATED)
 def create_url(short_url: str):
