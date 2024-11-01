@@ -4,6 +4,7 @@ from src.strategy.youtube_url import YoutubeUrlStrategy
 from src.interfaces.strategy_interface import URLShorterStrategyInterface
 from src.interfaces.url_service_interface import UrlServiceInterface
 from src.decorator.count_decorator import count_access
+from datetime import datetime
 
 class UrlService(UrlServiceInterface):
 
@@ -44,7 +45,9 @@ class UrlService(UrlServiceInterface):
         result = {
             "url": url,
             "shortCode": resultUrl,
-            "accessCount": 0 
+            "accessCount": 0,
+            "createdAt": datetime.now(),
+            "updatedAt": datetime.now()
         }
 
         urls_collection.insert_one(result)
@@ -68,7 +71,11 @@ class UrlService(UrlServiceInterface):
 
         result = urls_collection.update_one(
             { "shortCode": short_url },
-            { "$set": { "url": url } }
+            { "$set": 
+                {
+                    "url": url,
+                    "updatedAt": datetime.now()
+                } },
         )
 
         if result.modified_count == 0:
