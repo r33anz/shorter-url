@@ -3,6 +3,7 @@ from src.strategy.instagram_url import InstagramUrlStrategy
 from src.strategy.youtube_url import YoutubeUrlStrategy
 from src.interfaces.strategy_interface import URLShorterStrategyInterface
 from src.interfaces.url_service_interface import UrlServiceInterface
+from src.decorator.count_decorator import count_access
 
 class UrlService(UrlServiceInterface):
 
@@ -49,8 +50,15 @@ class UrlService(UrlServiceInterface):
         urls_collection.insert_one(result)
         return result
     
-    def get_short_url(self, short_url :str):
-        pass
+    
+    def get_short_url(self,short_url :str):
+
+        document = urls_collection.find_one({"shortCode": short_url})
+
+        if not document:
+            return None
+        
+        return document
 
     def get_all_url(self):
         documents = urls_collection.find()
@@ -59,7 +67,7 @@ class UrlService(UrlServiceInterface):
     def update_short_url(self, short_url :str, url : str):
 
         result = urls_collection.update_one(
-            { "shortCode": f"{short_url}" },
+            { "shortCode": short_url },
             { "$set": { "url": url } }
         )
 
@@ -67,12 +75,19 @@ class UrlService(UrlServiceInterface):
             return None 
 
         updated_document = urls_collection.find_one({"shortCode": short_url})
-        
+
         return updated_document
 
 
     def delete_short_url(self, short_url :str):
-        pass
+        
+        result = urls_collection.delete_one({ "shortCode": short_url })
+        return result
 
     def get_stats(self, short_url :str):
-        pass
+        document = urls_collection.find_one({"shortCode": short_url})
+
+        if not document:
+            return None
+        
+        return document

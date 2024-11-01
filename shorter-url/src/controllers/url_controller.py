@@ -1,6 +1,6 @@
 from src.interfaces.url_service_interface import UrlServiceInterface
 from src.decorator.count_decorator import count_access
-from src.dto.url_dto import UlrResponseDTO,UrlCreateDTO
+from src.dto.url_dto import UlrResponseDTO,UrlCreateDTO,UlrResponseStatsDTO
 from fastapi import  HTTPException , status
 
 class UrlController():
@@ -17,9 +17,10 @@ class UrlController():
     @count_access
     def get_short_url(self, short_url: str) -> UlrResponseDTO:
 
-        result = self.service.get_short_url(short_url)
+        result =  self.service.get_short_url(short_url)
         if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
+        
         return UlrResponseDTO(**result)
     
     def get_all_url(self):
@@ -38,14 +39,14 @@ class UrlController():
 
     def delete_short_url(self, short_url: str):
 
-        success = self.service.delete_short_url(short_url)
-        if not success:
+        result = self.service.delete_short_url(short_url)
+        if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short URL not found")
         return None  
     
-    def get_stats(self, short_url: str) -> UlrResponseDTO:
+    def get_stats(self, short_url: str) -> UlrResponseStatsDTO:
 
         stats = self.service.get_stats(short_url)
         if not stats:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Statistics not found")
-        return UlrResponseDTO(**stats)
+        return UlrResponseStatsDTO(**stats)
